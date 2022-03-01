@@ -19,7 +19,7 @@ R=C/2 @distance entre le maneton et le tourillon@ #en [m]
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
-def V_cyl(L,R,theta,D):
+def V_cyl(theta):
     b=L/R
     Vc=np.pi*((D)**2)*D/4
     for index,j in enumerate(theta):
