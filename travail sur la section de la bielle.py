@@ -53,4 +53,11 @@ def derivee_pression(theta,p):
     return dp/dtheta= -gamma*(p/V)*derivee_Vcyl(theta)+ (gamma-1)*(1/V)*derivee_chaleur(theta)
 
 def myfunc(rpm, s, theta, thetaC, deltaThetaC):
+    #
+    #!!!!!! theta en degrés et pas en radians
+    #
+    theta = theta*pi/180
+    #
+    #!!!!!! reconvertir le résultat final en fonction des degrés
+    #
     return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  #v
