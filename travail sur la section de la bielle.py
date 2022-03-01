@@ -43,8 +43,10 @@ def derivee_pression(Theta,p):
 def force_bielle():
     return F_pied_output et F_tete_output # en [N]
 
-def pression_cylindre():
-    return p_output # en [Pa]
+def pression_cylindre(theta):
+    result = solve_ivp(derivee_pression,(-pi,pi),s*10**5,t_eval = theta)
+    #if(result.t != theta) : print("Attention aux angles évalués")
+    return result.y # en [Pa]
 
 def epaisseur_critique(): #? voir schema de l enonce
     return t  # en [m]
