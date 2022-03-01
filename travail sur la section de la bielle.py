@@ -22,7 +22,7 @@ V_output=np.zeros(len(theta))
 def V_cyl(L,R,theta,D):
     b=L/R
     Vc=np.pi*((D)**2)*D/4
-    for index,j in enumerate(theta,-180*2):
+    for index,j in enumerate(theta):
         v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
     return V_output
