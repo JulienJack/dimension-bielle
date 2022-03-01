@@ -28,7 +28,7 @@ def V_cyl(Theta):
     return V_output
 
 def derivee_Vcyl(Theta):
-    return dV_dTheta
+    return (Vc/2)*(sin(theta)+(sin(theta)*cos(theta))/(sqrt(b**2-sin(theta)**2)))
 
 def apport_chaleur(Theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
     return Q*(1-cos(pi*(Theta-thetaC)/deltaThetaC))/2 # en [J]
