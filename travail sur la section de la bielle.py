@@ -34,6 +34,7 @@ def force_bielle():
     return F_pied_output et F_tete_output # en [N]
 
 def pression_cylindre():
+    
     return p_output # en [Pa]
 
 def epaisseur_critique(): #? voir schema de l enonce
