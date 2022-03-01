@@ -19,22 +19,22 @@ R=C/2 @distance entre le maneton et le tourillon@ #en [m]
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
-def V_cyl(Theta):
+def V_cyl(theta):
     b=L/R
     Vc=np.pi*((D)**2)*D/4
-    for index,j in enumerate(Theta):
-        v=(Vc/2)*(1-cos(Theta)+b-sqrt(b**2-sin(Theta)**2))+(1*Vc)/(tau-1)
+    for index,j in enumerate(theta):
+        v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
     return V_output
 
-def derivee_Vcyl(Theta):
+def derivee_Vcyl(theta):
     return (Vc/2)*(sin(theta)+(sin(theta)*cos(theta))/(sqrt(b**2-sin(theta)**2)))
 
-def apport_chaleur(Theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
-    return Q*(1-cos(pi*(Theta-thetaC)/deltaThetaC))/2 # en [J]
+def apport_chaleur(theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
+    return Q*(1-cos(pi*(theta-thetaC)/deltaThetaC))/2 # en [J]
 
-def derivee_chaleur(Theta):
-    return Q*pi*sin(pi*(Theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
+def derivee_chaleur(theta):
+    return Q*pi*sin(pi*(theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
 
 def derivee_pression(Theta,p):
     return ( -gamma*p*derivee_Vcyl(Theta) + (gamma-1)*derivee_chaleur(Theta) )/V_cycl(Theta)
