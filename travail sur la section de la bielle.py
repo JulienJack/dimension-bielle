@@ -9,7 +9,7 @@ C = @valeur course@ #[m] = la course est le déplacement du piston donc max de 2
 L = @valeur longueur bielle@  # [m] = la tige entre le piston et le vilebrequin ( relié au maneton du vilebrequin )
 mpiston = @valeur masse piston@ #[kg] =
 mbielle = @valeur masse bielle@ #[kg] = connecting rod
-Q = @valeur chaleur emise par fuel par kg de melange admis@ #[J/kg_inlet gas]
+Q = 2 800 000 #[J/kg_inlet gas]
 
 #Deux directions de flambages ?
 
