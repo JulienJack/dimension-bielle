@@ -22,13 +22,13 @@ b=L/R
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
-def V_cyl(theta):
+def vcyl(theta):
     for index,j in enumerate(theta):
         v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
     return V_output
 
-def derivee_Vcyl(theta):
+def derivee_vcyl(theta):
     return (Vc/2)*(sin(theta)+(sin(theta)*cos(theta))/(sqrt(b**2-sin(theta)**2)))
 
 def apport_chaleur(theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
@@ -48,7 +48,8 @@ def pression_cylindre():
 
 def epaisseur_critique(): #? voir schema de l enonce
     return t  # en [m]
-
+def derivee_pression(theta,p):
+    return dp/dtheta= -gamma*(p/V)*derivee_Vcyl(theta)+ (gamma-1)*(1/V)*derivee_chaleur(theta)
 
 def myfunc(rpm, s, theta, thetaC, deltaThetaC):
     return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  #v
