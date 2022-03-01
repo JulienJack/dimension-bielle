@@ -18,14 +18,13 @@ R=C/2 @distance entre le maneton et le tourillon@ #en [m]
 #theta en degre ss forme d un vecteur de - 180 a 180
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
-H=np.zeros(len(theta))
 V_output=np.zeros(len(theta))
 def V_cyl(L,R,theta,D):
     b=L/R
+    Vc=np.pi*((D)**2)*D/4
     for index,j in enumerate(theta,-180*2):
-        h=R*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))
-        H[index]=h
-        V_output=H*pi*(D/2)**2
+        v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
+        V_output[index]=v
     return V_output
 
 def apport_chaleur(): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
