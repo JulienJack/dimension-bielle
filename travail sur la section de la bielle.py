@@ -36,7 +36,7 @@ def apport_chaleur(theta,thetaC,deltaThetaC): # calculer l'apport de chaleur sur
 def derivee_chaleur(theta,thetaC,deltaThetaC):
     return Q*pi*sin(pi*(theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
 
-def derivee_pression(#pression,volume,derivee_volume etc):
+def derivee_pression(theta,p):
     return dp_dTheta
 
 def force_bielle():
