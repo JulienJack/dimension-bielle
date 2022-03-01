@@ -48,6 +48,7 @@ def pression_cylindre():
 
 def epaisseur_critique(): #? voir schema de l enonce
     return t  # en [m]
+
 def derivee_pression(theta,p):
     return dp/dtheta= -gamma*(p/V)*derivee_Vcyl(theta)+ (gamma-1)*(1/V)*derivee_chaleur(theta)
 
