@@ -6,6 +6,7 @@ tau = 10 #[de 8 à 13 pour les modernes] = Volume au point mort bas PMB (vol max
 # pour l essence le taux vaire de 1.0 a 1.2 MPa et pour le diesel de 3.0 a 3.5 MPa
 D = @valeur alesage@ #[m] = diametre du cylindre dans lequel le piston rentre
 C = @valeur course@ #[m] = la course est le déplacement du piston donc max de 2R
+Vc = pi*((D)**2)*D/4 #[-] = la cylindrée, soit le volume max - volume min
 
 L = @valeur longueur bielle@  # [m] = la tige entre le piston et le vilebrequin ( relié au maneton du vilebrequin )
 mpiston = @valeur masse piston@ #[kg] =
@@ -22,7 +23,6 @@ theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
 def V_cyl(theta):
     b=L/R
-    Vc=np.pi*((D)**2)*D/4
     for index,j in enumerate(theta):
         v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
