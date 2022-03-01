@@ -16,13 +16,13 @@ Q = 2 800 000 #[J/kg_inlet gas]
 #Deux directions de flambages ?
 
 R=C/2 @distance entre le maneton et le tourillon@ #en [m]
+b=L/R
 
 #theta en degre ss forme d un vecteur de - 180 a 180
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
 def V_cyl(theta):
-    b=L/R
     for index,j in enumerate(theta):
         v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
