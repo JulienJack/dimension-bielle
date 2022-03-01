@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import sqrt,cos,sin,pi
 
-tau = @valeur taux compression@ #[-] = Volume au point mort bas PMB (vol max) / volume au point mort haut PMH (vol min)
+tau = 10 #[de 8 à 13 pour les modernes] = Volume au point mort bas PMB (vol max) / volume au point mort haut PMH (vol min)
 # pour l essence le taux vaire de 1.0 a 1.2 MPa et pour le diesel de 3.0 a 3.5 MPa
 D = @valeur alesage@ #[m] = diametre du cylindre dans lequel le piston rentre
 C = @valeur course@ #[m] = la course est le déplacement du piston donc max de 2R
@@ -45,4 +45,3 @@ def myfunc(rpm, s, theta, thetaC, deltaThetaC):
     #VOTRE CODE
     return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  #v
 
-la je modifie sans problèmes
