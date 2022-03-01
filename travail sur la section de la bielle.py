@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import sqrt,cos,sin,pi
+from scipy.integrate import solve_ivp
 
 tau = 10 #[de 8 à 13 pour les modernes] = Volume au point mort bas PMB (vol max) / volume au point mort haut PMH (vol min)
 # pour l essence le taux vaire de 1.0 a 1.2 MPa et pour le diesel de 3.0 a 3.5 MPa
