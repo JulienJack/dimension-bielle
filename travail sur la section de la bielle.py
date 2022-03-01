@@ -27,8 +27,17 @@ def V_cyl(L,R,theta,D):
         V_output[index]=v
     return V_output
 
-def apport_chaleur(): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
-    return Q_output # en [J]
+def derivee_Vcyl():
+    return dV_dTheta
+
+def apport_chaleur(theta,thetaC,deltaThetaC): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
+    return Q*(1-cos(pi*(theta-thetaC)/deltaThetaC))/2 # en [J]
+
+def derivee_chaleur(theta,thetaC,deltaThetaC):
+    return Q*pi*sin(pi*(theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
+
+def derivee_pression(#pression,volume,derivee_volume etc):
+    return dp_dTheta
 
 def force_bielle():
     return F_pied_output et F_tete_output # en [N]
@@ -44,4 +53,3 @@ def epaisseur_critique(): #? voir schema de l enonce
 def myfunc(rpm, s, theta, thetaC, deltaThetaC):
     #VOTRE CODE
     return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  
-
