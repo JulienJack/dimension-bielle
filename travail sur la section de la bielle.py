@@ -22,13 +22,13 @@ b=L/R
 #Mais on va simuler un cycle complet ? donc 2* 360 ?
 theta= np.arange(-180*2,180*2,5)
 V_output=np.zeros(len(theta))
-def vcyl(theta):
+def volume(theta):
     for index,j in enumerate(theta):
         v=(Vc/2)*(1-cos(theta)+b-sqrt(b**2-sin(theta)**2))+(1*Vc)/(tau-1)
         V_output[index]=v
     return V_output
 
-def derivee_vcyl(theta):
+def derivee_volume(theta):
     return (Vc/2)*(sin(theta)+(sin(theta)*cos(theta))/(sqrt(b**2-sin(theta)**2)))
 
 def apport_chaleur(theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
