@@ -30,14 +30,14 @@ def V_cyl(theta):
 def derivee_Vcyl():
     return dV_dTheta
 
-def apport_chaleur(theta,thetaC,deltaThetaC): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
+def apport_chaleur(theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma 
     return Q*(1-cos(pi*(theta-thetaC)/deltaThetaC))/2 # en [J]
 
-def derivee_chaleur(theta,thetaC,deltaThetaC):
+def derivee_chaleur(theta):
     return Q*pi*sin(pi*(theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
 
 def derivee_pression(theta,p):
-    return dp_dTheta
+    return ( -gamma*p*derivee_Vcyl(theta) + (gamma-1)*derivee_chaleur(theta) )/V_cycl(theta)
 
 def force_bielle():
     return F_pied_output et F_tete_output # en [N]
