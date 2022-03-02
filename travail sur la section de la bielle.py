@@ -56,7 +56,18 @@ def pression_cylindre(theta):
 
 def epaisseur_critique(): #? voir schema de l enonce
     return t  # en [m]
-
+sigma= 450*10**6 #résitance à la compression en [Pa]
+E= 200*10**9 #module d'élasticité en [pa]
+Ix=(419/12)*t**4 # inertie du profil en "I" selon l'axe xx
+#Iy=(131/12)*t**4 # inertie du profil en "I" selon l'axe yy
+Kx=1 # flambage selon l'axe x (dans le plan du mouvement )
+Ky= 0.5 # flambage selon l'axe y (perpendiculairement au mouvement )
+A_I=12*t**2 #Aire de la surface de la bielle par rapport à x en [m^2]
+L_b=5*t #longueur de la bielle en [m]
+def flambage(theta):
+    F_Euler=(np.pi)**2*E*Ix/(Kx*L_b)**2
+    
+    return (1/F_Euler+1/(A_I*sigma))**(-1)
 
 def myfunc(rpm, s, theta, thetaC, deltaThetaC):
     #
