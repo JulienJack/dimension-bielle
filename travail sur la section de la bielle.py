@@ -46,8 +46,10 @@ def derivee_chaleur(theta):
 def derivee_pression(Theta,p):
     return ( -gamma*p*derivee_volume(Theta) + (gamma-1)*derivee_chaleur(Theta) )/volume(Theta)
 
-def force_bielle():
-    return (F_pied_output,F_tete_output) # en [N]
+def force_bielle(theta): #bilan des forces
+    F_pied_output=(np.pi*D**2)*pression_cylindre(theta)/4-mpiston*R*cos(theta)*(omega)**2
+    F_tete_output=-(np.pi*D**2)*pression_cylindre(theta)+(mpiston+mbielle)*R*cos(theta)*(omega)**2
+    return F_pied_output,F_tete_output # en [N]
 
 def pression_cylindre(theta):
     result = solve_ivp(derivee_pression,(-pi,pi),np.array([s*10**5]),t_eval = theta)
