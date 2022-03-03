@@ -60,13 +60,13 @@ def pression_cylindre(theta):
 
 def epaisseur_critique(): #? voir schema de l enonce
     x,y=flambage(theta)
-    a,b=force_bielle(theta)
+    a=force_bielle(theta)
     t_x=[]
     t_y=[]
-    if (a+b-x) >0:
+    if (a-x) >0:
         t_x.append(a+b-x)
         tx_min=np.min(t_min)
-    if a+b-y >0:
+    if a-y >0:
         t_y.append(a+b-y)
         ty_min=np.min(t_min)
     return tx_min,ty_min  # en [m]
