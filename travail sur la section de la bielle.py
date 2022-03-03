@@ -78,7 +78,7 @@ Ix=(419/12)*t**4 # inertie du profil en "I" selon l'axe xx
 #Iy=(131/12)*t**4 # inertie du profil en "I" selon l'axe yy
 Kx=1 # flambage selon l'axe x (dans le plan du mouvement )
 Ky= 0.5 # flambage selon l'axe y (perpendiculairement au mouvement )
-A_I=12*t**2 #Aire de la surface de la bielle par rapport à x en [m^2]
+A_I=11*t**2 #Aire de la surface de la bielle par rapport à x en [m^2]
 
 
 def flambage(theta):
