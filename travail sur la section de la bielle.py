@@ -49,7 +49,7 @@ def derivee_pression(Theta,p):
 def force_bielle(theta,rpm): #bilan des forces
     omega= rpm*(2*np.pi)/60  # vitesse angulaire PAR RAPPORT à l'axe TOURILLON ? en [rad/s] 
     F_pied_output=(np.pi*D**2)*pression_cylindre(theta)/4-mpiston*R*cos(theta)*(omega)**2
-    F_tete_output=-(np.pi*D**2)*pression_cylindre(theta)+(mpiston+mbielle)*R*cos(theta)*(omega)**2
+    F_tete_output=-(np.pi*D**2)*pression_cylindre(theta)/4+(mpiston+mbielle)*R*cos(theta)*(omega)**2
     return F_pied_output+F_tete_output # La compression de la bielle cad la somme de la force appliquée sur la tete et sur le pied de la bielle en [N]
 
 
@@ -58,7 +58,7 @@ def pression_cylindre(theta):
     #if(result.t != theta) : print("Attention aux angles évalués")
     return result.y.reshape(len(result.y[0])) # en [Pa]
 
-def epaisseur_critique(): #? voir schema de l enonce
+def epaisseur_critique(): 
     x,y=flambage(theta)
     a=force_bielle(theta)
     t_x=[]
@@ -79,6 +79,7 @@ Ix=(419/12)*t**4 # inertie du profil en "I" selon l'axe xx
 Kx=1 # flambage selon l'axe x (dans le plan du mouvement )
 Ky= 0.5 # flambage selon l'axe y (perpendiculairement au mouvement )
 A_I=11*t**2 #Aire de la surface de la bielle par rapport à x en [m^2]
+L_b=L # ??? ??? ???? 
 
 
 def flambage(theta):
