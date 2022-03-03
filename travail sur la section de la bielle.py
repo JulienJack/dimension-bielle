@@ -58,19 +58,9 @@ def pression_cylindre(theta):
     #if(result.t != theta) : print("Attention aux angles évalués")
     return result.y.reshape(len(result.y[0])) # en [Pa]
 
-def epaisseur_critique(): 
-    x,y=flambage(theta)
-    a=force_bielle(theta)
-    t_x=[]
-    t_y=[]
-    if (a-x) >0:
-        t_x.append(a+b-x)
-        tx_min=np.min(t_min)
-    if a-y >0:
-        t_y.append(a+b-y)
-        ty_min=np.min(t_min)
-    return tx_min,ty_min  # en [m]
-    return t  # en [m]
+def epaisseur_critique(theta): #rend la dimension de t limite par rapport au flambage en x
+    t=(((((force_bielle(theta))**-1)-1/(np.pi)**2*E*Ix/(Kx*L_b)**2)**-1)/sigma*11)**(1/2)
+    return t  # taille minimale de t, mesure caractérisant le dimensionnement de la bielle [m]
 
 sigma= 450*10**6 #résitance à la compression en [Pa]
 E= 200*10**9 #module d'élasticité en [pa]
@@ -82,7 +72,7 @@ A_I=11*t**2 #Aire de la surface de la bielle par rapport à x en [m^2]
 L_b=L # ??? ??? ???? 
 
 
-def flambage(theta):
+def flambage(theta): # rend la force critique que lon peut exercer sur la bielle avant un flambage en x et y
     F_Eulerx=(np.pi)**2*E*Ix/(Kx*L_b)**2
     F_Eulery=(np.pi)**2*E*Iy/(Ky*L_b)**2
     return (1/F_Eulerx+(1/(A_I*sigma)))**(-1),(1/F_Eulery+(1/(A_I*sigma)))**(-1)
