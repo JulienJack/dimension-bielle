@@ -52,7 +52,7 @@ def force_bielle(theta,rpm): #bilan des forces
     omega= rpm*(2*np.pi)/60  # vitesse angulaire PAR RAPPORT à l'axe TOURILLON ? en [rad/s] 
     F_pied_output=(np.pi*D**2)*pression_cylindre(theta)/4-mpiston*R*cos(theta)*(omega)**2
     F_tete_output=-(np.pi*D**2)*pression_cylindre(theta)/4+(mpiston+mbielle)*R*cos(theta)*(omega)**2
-    return F_pied_output+F_tete_output # La compression de la bielle cad la somme de la force appliquée sur la tete et sur le pied de la bielle en [N]
+    return F_pied_output-F_tete_output # La compression de la bielle cad la somme de la force appliquée sur la tete et sur le pied de la bielle en [N]
 
 
 def pression_cylindre(theta):
