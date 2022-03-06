@@ -33,13 +33,15 @@ def derivee_volume(theta):
 
 def apport_chaleur(theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma
     if type(theta) != np.float64 and type(theta) != type(0.0) :
-        theta[(thetaC > theta) or (theta > thetaC + deltaThetaC)] = 0.0
+        theta = np.copy(theta)
+        theta[(thetaC > theta) | (theta > thetaC + deltaThetaC)] = thetaC
     elif (thetaC > theta) or (theta > thetaC + deltaThetaC) : return 0.0
     return Q*(1-cos(pi*(theta-thetaC)/deltaThetaC))/2 # en [J]
 
 def derivee_chaleur(theta):
     if type(theta) != np.float64 and type(theta) != type(0.0) :
-        theta[(thetaC > theta) or (theta > thetaC + deltaThetaC)] = 0.0
+        theta = np.copy(theta)
+        theta[(thetaC > theta) | (theta > thetaC + deltaThetaC)] = thetaC
     elif (thetaC > theta) or (theta > thetaC + deltaThetaC) : return 0.0
     return Q*pi*sin(pi*(theta-thetaC)/deltaThetaC)/(2*deltaThetaC)
 
