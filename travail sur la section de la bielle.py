@@ -93,3 +93,144 @@ def myfunc(rpm, s, theta, thetaC, deltaThetaC):
     #!!!!!! reconvertir le résultat final en fonction des degrés
     #
     return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  #v
+
+
+
+############################### PROGRAMME MODIFIE ##############################################
+
+import numpy as np
+from numpy import sqrt,cos,sin,pi
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+tau = 10 #valeur taux compression# #[-] = Volume au point mort bas PMB (vol max) / volume au point mort haut PMH (vol min)
+# pour l essence le taux vaire de 1.0 a 1.2 MPa et pour le diesel de 3.0 a 3.5 MPa
+D = 0.15 #valeur alesage# #[m] = diametre du cylindre dans lequel le piston rentre
+C = 0.20 #valeur course# #[m] = la course est le déplacement du piston donc max de 2R
+Vc = pi*((D)**2)*C/4 #[-] = la cylindrée, soit le volume max - volume min
+
+L = 0.25 #valeur longueur bielle#  # [m] = la tige entre le piston et le vilebrequin ( relié au maneton du vilebrequin )
+mpiston = 0.5 #valeur masse piston# #[kg] =
+mbielle = 0.4 #valeur masse bielle# #[kg] = connecting rod
+Q = 2800000 #valeur chaleur emise par fuel par kg de melange admis# #[J/kg_inlet gas]
+gamma = 1.3 #coefficient isentropique
+
+#Deux directions de flambages ?
+
+R=C/2 #distance entre le maneton et le tourillon# #en [m]
+b=L/R
+
+#theta en degre ss forme d un vecteur de - 180 a 180
+#Mais on va simuler un cycle complet ? donc 2* 360 ?
+theta= np.arange(-180,180+0.5,1)
+H=np.zeros(len(theta))
+V_output=np.zeros(len(theta))
+
+thetaC = 10
+deltaThetaC = 15
+s = 1
+
+sigma_c = 450*10**6
+Kx = 1    #ATTENTION : prendre la valeur donnée par l'enoncée ou la valeur recommandée (recommanded design value)
+Ky = 0.5
+E = 200*10**9
+coeff_x = 419/12
+coeff_y = 131/12
+
+
+
+class Moteur :
+    
+    def __init__(self,L,R,D,mpiston,mbielle,tau,s,rpm,thetaC,deltaThetaC,Q,Tadm):
+        self.L = L
+        self.R = R
+        self.b = L/R
+        self.D = D
+        self.Vc = pi*R*D**2/2
+        self.mpiston = mpiston
+        self.mbielle = mbielle
+        self.tau = tau
+        self.s = s
+        self.rpm = rpm
+        self.thetaC = thetaC
+        self.deltaThetaC = deltaThetaC
+        self.Qtot = Q*self.Vc*tau/(tau-1)*s*10**5/(287*(Tadm+273.15))
+    
+    
+    def volume(self,theta):
+        return (self.Vc/2)*(1-cos(theta)+self.b-sqrt(self.b**2-sin(theta)**2))+(self.Vc)/(self.tau-1)
+
+
+    def derivee_volume(self,theta):
+        return (self.Vc/2)*(sin(theta)+(sin(theta)*cos(theta))/(sqrt(self.b**2-sin(theta)**2)))
+
+
+    def apport_chaleur(self,theta): # calculer l'apport de chaleur sur la durée de temps de combustion voir son schéma
+        if type(theta) != np.float64 and type(theta) != type(0.0) :
+            theta = np.copy(theta)
+            theta[(self.thetaC > theta) | (theta > self.thetaC + self.deltaThetaC)] = self.thetaC
+        elif (self.thetaC > theta) or (theta > self.thetaC + self.deltaThetaC) : return 0.0
+        return self.Qtot*(1-cos(pi*(theta-self.thetaC)/self.deltaThetaC))/2 # en [J]
+
+
+    def derivee_chaleur(self,theta):
+        if type(theta) != np.float64 and type(theta) != type(0.0) :
+            theta = np.copy(theta)
+            theta[(self.thetaC > theta) | (theta > self.thetaC + self.deltaThetaC)] = self.thetaC
+        elif (self.thetaC > theta) or (theta > self.thetaC + self.deltaThetaC) : return 0.0
+        return self.Qtot*pi*sin(pi*(theta-self.thetaC)/self.deltaThetaC)/(2*self.deltaThetaC)
+
+
+    def derivee_pression(self,Theta,p):
+        return ( -gamma*p*self.derivee_volume(Theta) + (gamma-1)*self.derivee_chaleur(Theta) )/self.volume(Theta)
+
+
+    def forces_bielle(self,theta,p = None): #bilan des forces
+        if p is None :
+            p = self.pression_cylindre(theta)
+        omega = self.rpm*(2*pi)/60  # vitesse angulaire PAR RAPPORT à l'axe TOURILLON ? en [rad/s]
+        F_pied_output = (pi*self.D**2)*p/4-self.mpiston*self.R*cos(theta)*(omega)**2
+        F_tete_output = -(pi*self.D**2)*p/4+(self.mpiston+self.mbielle)*self.R*cos(theta)*(omega)**2
+        return (F_pied_output,F_tete_output,F_pied_output-F_tete_output) # La compression de la bielle cad la somme de la force appliquée sur la tete et sur le pied de la bielle en [N]
+
+
+    def pression_cylindre(self,theta):
+        result = solve_ivp(self.derivee_pression,(-pi,pi),np.array([self.s*10**5]),t_eval = theta)
+        return result.y.reshape(len(result.y[0])) # en [Pa]
+
+
+    def epaisseur_critique(self,theta,f_crit = None, p = None): #? voir schema de l enonce
+        if f_crit is None :
+            f_crit = max(self.forces_bielle(theta,p)[2])
+        delta_ux = 1/(121*sigma_c**2) + 4*(Kx*self.L)**2/(f_crit*pi**2*E*coeff_x)
+        delta_uy = 1/(121*sigma_c**2) + 4*(Ky*self.L)**2/(f_crit*pi**2*E*coeff_y)
+        t = sqrt(f_crit*( 1/(11*sigma_c) + sqrt(max(delta_ux,delta_uy)) )/2)
+        return t  # en [m]
+
+
+
+
+def myfunc(rpm, s, theta, thetaC, deltaThetaC):
+    #
+    #!!!!!! theta en degrés et pas en radians
+    #thetaC le décalage par rapport à zéro dans le sens négatif
+    #
+    print(theta)
+    theta = np.copy(theta)*pi/180
+    print(theta)
+    thetaC = -thetaC*pi/180
+    deltaThetaC = deltaThetaC*pi/180
+    #
+    #!!!!!! reconvertir le résultat final en fonction des degrés
+    #
+    M = Moteur(L,R,D,mpiston,mbielle,tau,s,rpm,thetaC,deltaThetaC,Q,30)
+    V_output = M.volume(theta)
+    Q_output = M.apport_chaleur(theta)
+    p_output = M.pression_cylindre(theta)
+    (F_pied_output,F_tete_output,F_compress) = M.forces_bielle(theta, p_output)
+    t = M.epaisseur_critique(theta, f_crit = max(F_compress))
+    return (V_output, Q_output, F_pied_output, F_tete_output, p_output, t)  #v
+
+
+
+
